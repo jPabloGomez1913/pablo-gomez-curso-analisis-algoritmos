@@ -2,7 +2,7 @@
 
 import random
 
-FRACCION_NUEVOS = 0.02  # escenario B: 2% de resultados nuevos al final
+FRACCION_NUEVOS = 0.02  
 
 
 def generar_aleatorio(n: int, semilla: int = 42) -> list[int]:
@@ -34,17 +34,14 @@ def generar_casi_ordenado(n: int, semilla: int = 42) -> list[int]:
     """
     rng = random.Random(semilla)
 
-    # Punto de partida: permutacion aleatoria de 0..n-1 (enteros distintos).
+    
     lote = rng.sample(range(n), n)
 
-    # El 2% final es nuevo; el 98% restante corresponde a la lista de ayer.
     n_nuevos = round(FRACCION_NUEVOS * n)
     n_ordenados = n - n_nuevos
 
     nuevos = lote[n_ordenados:]
 
-    # Como los indices son distintos y van de 0 a n-1, se construye la
-    # lista de ayer de mayor a menor excluyendo los nuevos, sin ordenar.
     es_nuevo = [False] * n
     for valor in nuevos:
         es_nuevo[valor] = True
@@ -63,6 +60,4 @@ def generar_inverso(n: int) -> list[int]:
         Lista de n indices de riesgo enteros distintos, en el orden
         inverso al que el algoritmo debe producir.
     """
-    # El algoritmo produce el orden de mayor a menor riesgo, asi que el
-    # orden inverso es de menor a mayor. Es determinista: no usa semilla.
     return list(range(n))

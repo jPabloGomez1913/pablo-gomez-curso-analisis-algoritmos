@@ -20,7 +20,6 @@ def insertion_sort(datos: list[int]) -> tuple[list[int], int]:
         clave = lista[i]
         j = i - 1
 
-        # Orden descendente; los empates conservan su orden original.
         while j >= 0:
             comparaciones += 1
             if lista[j] >= clave:
@@ -58,7 +57,6 @@ def merge_sort(datos: list[int]) -> tuple[list[int], int]:
     i = j = 0
     while i < len(izquierda) and j < len(derecha):
         comparaciones += 1
-        # Elegir la izquierda en los empates conserva la estabilidad.
         if izquierda[i] >= derecha[j]:
             resultado.append(izquierda[i])
             i += 1
@@ -66,7 +64,6 @@ def merge_sort(datos: list[int]) -> tuple[list[int], int]:
             resultado.append(derecha[j])
             j += 1
 
-    # Los sobrantes ya estan ordenados: se copian sin compararlos.
     resultado.extend(izquierda[i:])
     resultado.extend(derecha[j:])
     return resultado, comparaciones
