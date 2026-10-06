@@ -11,11 +11,11 @@ Muy buen trabajo: el informe es claro, está bien razonado y se apoya en sus pro
 |---|---|
 | Corrección conceptual | 22 / 25 |
 | Calidad de la explicación teórica | 24 / 25 |
-| Corrección de la implementación | 18 / 20 |
+| Corrección de la implementación | 19 / 20 |
 | Calidad del análisis de las gráficas | 19 / 20 |
 | Documentación y organización del informe | 6 / 10 |
-| **Total** | **89 / 100** |
-| **Nota (0–5)** | **4.45** |
+| **Total** | **90 / 100** |
+| **Nota (0–5)** | **4.50** |
 
 ## 1. Corrección conceptual (22 / 25)
 **Lo que hizo bien:**
@@ -38,15 +38,12 @@ Muy buen trabajo: el informe es claro, está bien razonado y se apoya en sus pro
 **Lo que puede mejorar:**
 - Al usar la notación Θ en el mejor caso de insertion sort, aclare que se refiere a la lista ya en el orden que el algoritmo produce.
 
-## 3. Corrección de la implementación (18 / 20)
+## 3. Corrección de la implementación (19 / 20)
 **Lo que hizo bien:**
 - `insertion_sort` y `merge_sort` ordenan bien (probadas con listas aleatorias, vacías y con repetidos), no cambian la lista recibida, cuentan solo comparaciones entre elementos y no usan `sorted()` ni `list.sort()`.
 - `merge_sort` tiene su propia mezcla recursiva.
 - Los tres generadores dan listas del tamaño pedido, con valores distintos y semilla reproducible; el escenario B deja el 98 % ordenado y el 2 % al final.
 - Tiene type hints y docstrings en todas las funciones.
-
-**Lo que puede mejorar:**
-- En `datos.py` quedaron espacios sobrantes al final de una línea, una línea en blanco con espacios y una línea en blanco de más. Son detalles de estilo (PEP 8) que se arreglan con el formateador del editor.
 
 ## 4. Calidad del análisis de las gráficas (19 / 20)
 **Lo que hizo bien:**
@@ -73,6 +70,5 @@ Sí. Los scripts corren sin errores, ordenan correctamente y generan las gráfic
 
 ## Para el próximo laboratorio
 - Haga commits pequeños y frecuentes, con mensajes que describan el cambio.
-- Pase el formateador o revise PEP 8 antes de entregar.
 - Respalde los cálculos de energía con números, aunque sean estimados.
 - Aclare los supuestos de las extrapolaciones y los límites de lo medido.
