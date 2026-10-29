@@ -116,37 +116,33 @@ for i in range(20):
 
 ### Procedimiento de medición
 
-Para la medición del tiempo de ejecución de ambas funciones se uso la función:
+Se fijó la semilla en `42` y se midieron siete entradas aleatorias nuevas para cada tamaño. En cada repetición se intercalaron los tamaños, se midieron ambos algoritmos y se alternó cuál corría primero. `perf_counter()` midió solo la llamada al algoritmo. La gráfica usa el promedio aritmético de las siete mediciones y sus barras muestran el mínimo y el máximo observados. El eje vertical es logarítmico para que se distingan las dos curvas.
 
 ```python
-    perf_counter()
-```
-Los datos de prueba fueron generados aleatoriamente  y el tamaño de esta lista esta dado por : 
-```python
-    random.seed(42)
-    tamanios = [10, 50, 100, 500, 1000, 4000, 8000]
-    def generar_entradas(n: int) -> list[int]:
-        entrada = [random.randint(-100,100) for _ in range(n)]
-        random.shuffle(entrada)
-        return entrada
-
+inicio = perf_counter()
+resultado = algoritmo(serie)
+tiempo = perf_counter() - inicio
 ```
 
-para asegurar que solo se mide el tiempo de ejecución de la función y no de algo mas se uso la siguiente estructura
+Los datos se generan aleatoriamente; estos son los tamaños y la semilla usados por el script:
 
 ```python
-   for tamanio in tamanios:
-        serie = generar_entradas(tamanio)
-
-        inicio_fuerza_bruta = perf_counter()
-        subarreglo_fuerza_bruta(serie)
-        fin_fuerza_bruta = perf_counter()
-        tiempo_fuerza_bruta.append(fin_fuerza_bruta - inicio_fuerza_bruta)
-
+random.seed(42)
+tamanios = [10, 50, 100, 500, 1000, 4000, 8000]
+repeticiones = 7
 ```
 
+La siguiente tabla contiene los promedios que se grafican. Se imprimen con la misma precisión al ejecutar `medicion.py`:
 
-
+| Tamaño `n` | Fuerza bruta, promedio (s) | Divide y vencerás, promedio (s) |
+| ---: | ---: | ---: |
+| 10 | 0,000019814 | 0,000053557 |
+| 50 | 0,000255186 | 0,000257171 |
+| 100 | 0,001003157 | 0,000673271 |
+| 500 | 0,021593029 | 0,002488486 |
+| 1.000 | 0,096105514 | 0,005529000 |
+| 4.000 | 1,412613571 | 0,024458571 |
+| 8.000 | 5,040943786 | 0,044135114 |
 
 
 ## Parte 3 — Análisis
@@ -166,18 +162,13 @@ La fuerza bruta considera cada par de índices `(i, j)`, es decir, cada tramo co
 
 ### 2. Lo medido contra lo esperado
 
-Al crecer `n`, ambas curvas aumentan, pero la de fuerza bruta crece mucho más rápido. Leyendo aproximadamente la gráfica para el par consecutivo `4000` y `8000`:
+En las últimas dos filas, fuerza bruta pasa de `1,412613571 s` a `5,040943786 s`, un factor de `3,57`. Divide y vencerás pasa de `0,024458571 s` a `0,044135114 s`, un factor de `1,80`. La gráfica muestra esos mismos promedios y las barras muestran el rango de las siete mediciones.
 
-| Algoritmo | Tiempo con `n = 4000` | Tiempo con `n = 8000` | Multiplicador aproximado |
-| --- | ---: | ---: | ---: |
-| Fuerza bruta | `0,37 s` | `1,48 s` | `1,48 / 0,37 ≈ 4,0` |
-| Divide y vencerás | `0,006 s` | `0,014 s` | `0,014 / 0,006 ≈ 2,3` |
-
-Al duplicar `n`, `Θ(n²)` predice un factor de `4`. Para `Θ(n log n)`, el factor esperado entre `4000` y `8000` es `2 log₂(8000) / log₂(4000) ≈ 2,17`. Los factores observados son cercanos a esas predicciones. No coinciden exactamente porque cada tamaño se midió una sola vez y los tiempos dependen del ruido de ejecución; además, los valores de la tabla se leen de la gráfica.
+Al duplicar `n`, los modelos predicen factores de `4` para `Θ(n²)` y de `2 log₂(8000) / log₂(4000) ≈ 2,17` para `Θ(n log n)`. El factor de fuerza bruta queda cerca de `4`; el de divide y vencerás aumenta, pero queda por debajo de `2,17`. Las barras de rango muestran variación entre repeticiones, así que estos resultados son compatibles con las tendencias esperadas, pero no bastan para afirmar una coincidencia precisa. La complejidad se obtiene del análisis del algoritmo; los tiempos medidos dependen también del equipo y de la carga durante la ejecución.
 
 ### 3. Tamaños pequeños
 
-En el rango medido, divide y vencerás empieza a ganar aproximadamente alrededor de `n = 100`: en los tamaños más pequeños, la fuerza bruta tarda igual o menos, y desde los tamaños mayores su ventaja de tiempo es clara. Para entradas pequeñas, las llamadas recursivas y el trabajo de dividir y combinar tienen un costo fijo que puede superar el ahorro de operaciones. El punto de cruce es aproximado porque las mediciones pequeñas duran muy poco y se hicieron una sola vez.
+Según los promedios de esta ejecución, fuerza bruta tarda menos en `n = 10` y `n = 50`, mientras que divide y vencerás tarda menos desde `n = 100`. El cruce observado queda entre `50` y `100`. Para entradas pequeñas, las llamadas recursivas y el trabajo de dividir y combinar pueden superar el ahorro de operaciones. El cruce es aproximado y depende de estas mediciones y del equipo.
 
 ### 4. ¿Cuándo conviene dividir?
 
@@ -185,9 +176,9 @@ Para hallar el máximo de un arreglo, se puede dividir el arreglo en dos mitades
 
 ### 5. Concepto para la gerente
 
-Recomiendo divide y vencerás para procesar una serie de un millón de registros: su crecimiento `n log n` es mucho menor que el crecimiento cuadrático de la fuerza bruta. A partir de la gráfica, tomo como referencia aproximada `n = 8000`, con `1,48 s` para fuerza bruta y `0,014 s` para divide y vencerás. Las siguientes cifras son **estimaciones**, no mediciones directas:
+Recomiendo divide y vencerás para procesar una serie de un millón de registros: su crecimiento `n log n` es mucho menor que el crecimiento cuadrático de la fuerza bruta. Tomando como referencia los promedios de `n = 8000` de esta ejecución (`5,040943786 s` para fuerza bruta y `0,044135114 s` para divide y vencerás), las siguientes cifras son **estimaciones basadas en los modelos de complejidad**, no mediciones directas:
 
-- Fuerza bruta: `1,48 × (1.000.000 / 8.000)² = 1,48 × 125² ≈ 23.125 s`, es decir, alrededor de `6,4 horas`.
-- Divide y vencerás: `0,014 × (1.000.000 log₂(1.000.000) / (8.000 log₂(8.000))) ≈ 0,014 × 192,2 ≈ 2,7 s`.
+- Fuerza bruta: `5,040943786 × (1.000.000 / 8.000)² ≈ 78.765 s`, es decir, alrededor de `21,9 horas`.
+- Divide y vencerás: `0,044135114 × (1.000.000 log₂(1.000.000) / (8.000 log₂(8.000))) ≈ 0,044135114 × 192,2 ≈ 8,5 s`.
 
-Estas proyecciones escalan cada tiempo según su complejidad (`n²` o `n log n`), no mediante una regla de tres lineal. El tiempo real dependerá del equipo, la implementación y las condiciones de ejecución.
+Estas proyecciones escalan cada tiempo según su complejidad (`n²` o `n log n`), no mediante una regla de tres lineal. Son ilustrativas y heredan la variación observada en las mediciones. El tiempo real dependerá del equipo, la implementación y las condiciones de ejecución.
