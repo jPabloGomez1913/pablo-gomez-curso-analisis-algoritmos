@@ -66,7 +66,7 @@ Muy buen trabajo: el informe es claro, está bien razonado y se apoya en sus pro
 - Su nombre aparece en minúsculas ("Juan pablo gomez ramirez"); escríbalo con mayúsculas iniciales.
 
 ## ¿El código funciona?
-Sí. Los scripts corren sin errores, ordenan correctamente y generan las gráficas en la carpeta `graficas/`. Los tiempos de mi máquina son distintos a los suyos, pero las conclusiones son las mismas.
+Sí. Los scripts corren sin errores, ordenan correctamente y generan las gráficas en la carpeta `graficas/`. Los tiempos al ejecutarlos son distintos a los suyos, pero las conclusiones son las mismas.
 
 ## Para el próximo laboratorio
 - Haga commits pequeños y frecuentes, con mensajes que describan el cambio.
